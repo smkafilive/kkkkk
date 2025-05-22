@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cover Page Maker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Cover Page Maker</h2>
+    <input type="text" id="name" placeholder="Your Name" />
+    <input type="text" id="institute" placeholder="Institute Name" />
+    <input type="text" id="course" placeholder="Course Name" />
+    <input type="text" id="code" placeholder="Course Code" />
+    <input type="date" id="date" />
+    <input type="file" id="logoInput" accept="image/*" />
+    <button onclick="generate()">Generate Cover Page</button>
+    <div id="coverPage" class="cover" style="display:none;"></div>
+    <button id="downloadBtn" onclick="downloadPDF()" style="display:none;">Download as PDF</button>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

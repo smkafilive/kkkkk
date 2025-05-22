@@ -1,0 +1,41 @@
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  background: #f3f3f3;
+}
+.container {
+  max-width: 600px;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #ccc;
+}
+h2 {
+  text-align: center;
+}
+input, button {
+  width: 100%;
+  padding: 8px;
+  margin-top: 10px;
+}
+.cover {
+  text-align: center;
+  border: 2px solid black;
+  padding: 30px;
+  margin-top: 30px;
+  background: white;
+}
+.logo {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+#downloadBtn {
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  margin-top: 20px;
+}
