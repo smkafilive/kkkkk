@@ -172,29 +172,68 @@ generateBtn.addEventListener('click', function() {
 });
 
 // Download as PDF
+
+// Download as PDF - Improved Version
 downloadBtn.addEventListener('click', function() {
+    // Show loading indicator
+    downloadBtn.disabled = true;
+    downloadBtn.textContent = 'Generating PDF...';
+    
     const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4'
-    });
+    
+    // Create a clone of the cover page to avoid affecting the visible one
+    const coverClone = coverPage.cloneNode(true);
+    coverClone.style.position = 'absolute';
+    coverClone.style.left = '-9999px';
+    document.body.appendChild(coverClone);
+    
+    // Set higher quality options
+    const options = {
+        scale: 3, // Higher scale for better quality
+        useCORS: true,
+        allowTaint: true,
+        logging: false,
+        backgroundColor: '#FFFFFF',
+        windowWidth: coverPage.scrollWidth,
+        windowHeight: coverPage.scrollHeight
+    };
     
     // Use html2canvas to capture the cover page
-    html2canvas(coverPage, {
-        scale: 2,
-        logging: false,
-        useCORS: true,
-        allowTaint: true
-    }).then(canvas => {
-        const imgData = canvas.toDataURL('image/png');
-        const imgWidth = 210; // A4 width in mm
+    html2canvas(coverClone, options).then(canvas => {
+        // Remove the clone
+        document.body.removeChild(coverClone);
+        
+        // Create PDF
+        const doc = new jsPDF({
+            orientation: 'portrait',
+            unit: 'mm',
+            format: 'a4'
+        });
+        
+        // Calculate dimensions to maintain aspect ratio
+        const imgWidth = 190; // Slightly less than A4 width (210mm) for margins
         const imgHeight = (canvas.height * imgWidth) / canvas.width;
         
-        doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+        // Add image to PDF
+        const imgData = canvas.toDataURL('image/png', 1.0); // Highest quality
+        doc.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+        
+        // Save the PDF
         doc.save('SFMU_Cover_Page.pdf');
+        
+        // Reset button
+        downloadBtn.disabled = false;
+        downloadBtn.textContent = 'Download as PDF';
+    }).catch(error => {
+        console.error('Error generating PDF:', error);
+        document.body.removeChild(coverClone);
+        downloadBtn.disabled = false;
+        downloadBtn.textContent = 'Download as PDF';
+        alert('Error generating PDF. Please try again.');
     });
 });
+
+
 
 // Animation on scroll
 window.addEventListener('scroll', function() {
