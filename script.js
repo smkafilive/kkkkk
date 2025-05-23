@@ -64,6 +64,7 @@ const submittedToSelect = document.getElementById('submittedTo');
 const customFacultyInput = document.getElementById('customFaculty');
 const generateBtn = document.getElementById('generateBtn');
 const downloadBtn = document.getElementById('downloadBtn');
+const downloadImgBtn = document.getElementById('downloadImgBtn');
 const coverPage = document.getElementById('coverPage');
 
 // Form display elements
@@ -164,14 +165,16 @@ generateBtn.addEventListener('click', function() {
     studentDeptDisplay.textContent = `Department of ${departmentFullNames[studentDept]}`;
     submissionDateDisplay.textContent = `Date: ${formattedDate}`;
     
-    // Enable download button
+    // Enable download buttons
     downloadBtn.disabled = false;
+    downloadImgBtn.disabled = false;
     
     // Scroll to preview
     coverPage.scrollIntoView({ behavior: 'smooth' });
 });
-// Add this after your PDF download code
-document.getElementById('downloadImgBtn').addEventListener('click', function() {
+
+// Download as Image
+downloadImgBtn.addEventListener('click', function() {
     const btn = this;
     btn.disabled = true;
     btn.textContent = 'Generating Image...';
@@ -211,9 +214,8 @@ document.getElementById('downloadImgBtn').addEventListener('click', function() {
         alert('Error generating image. Please try again.');
     });
 });
-// Download as PDF
 
-// Download as PDF - Improved Version
+// Download as PDF
 downloadBtn.addEventListener('click', function() {
     // Show loading indicator
     downloadBtn.disabled = true;
@@ -272,8 +274,6 @@ downloadBtn.addEventListener('click', function() {
         alert('Error generating PDF. Please try again.');
     });
 });
-
-
 
 // Animation on scroll
 window.addEventListener('scroll', function() {
