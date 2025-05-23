@@ -170,7 +170,47 @@ generateBtn.addEventListener('click', function() {
     // Scroll to preview
     coverPage.scrollIntoView({ behavior: 'smooth' });
 });
-
+// Add this after your PDF download code
+document.getElementById('downloadImgBtn').addEventListener('click', function() {
+    const btn = this;
+    btn.disabled = true;
+    btn.textContent = 'Generating Image...';
+    
+    // Create a clone for better quality
+    const coverClone = coverPage.cloneNode(true);
+    coverClone.style.position = 'absolute';
+    coverClone.style.left = '-9999px';
+    document.body.appendChild(coverClone);
+    
+    const options = {
+        scale: 3,
+        useCORS: true,
+        allowTaint: true,
+        logging: false,
+        backgroundColor: '#FFFFFF',
+        windowWidth: coverPage.scrollWidth,
+        windowHeight: coverPage.scrollHeight
+    };
+    
+    html2canvas(coverClone, options).then(canvas => {
+        document.body.removeChild(coverClone);
+        
+        // Convert canvas to image and download
+        const link = document.createElement('a');
+        link.download = 'SFMU_Cover_Page.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        
+        btn.disabled = false;
+        btn.textContent = 'Download as Image';
+    }).catch(error => {
+        console.error('Error generating image:', error);
+        document.body.removeChild(coverClone);
+        btn.disabled = false;
+        btn.textContent = 'Download as Image';
+        alert('Error generating image. Please try again.');
+    });
+});
 // Download as PDF
 
 // Download as PDF - Improved Version
