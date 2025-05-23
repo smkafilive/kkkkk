@@ -197,7 +197,7 @@ downloadBtn.addEventListener('click', function() {
         doc.save('SFMU_Cover_Page.pdf');
     }).catch(error => {
         console.error("Error generating PDF:", error);
-        alert("Failed to generate PDF. Please try again. Check console for details."); // Added more specific error message
+        alert("Failed to generate PDF. This often happens if an image (like your logo) cannot be loaded. Please check the browser console (F12) for network errors related to `sfmu.png` and ensure it's in the correct location."); 
     });
 });
 
