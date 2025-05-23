@@ -197,7 +197,7 @@ downloadBtn.addEventListener('click', function() {
         doc.save('SFMU_Cover_Page.pdf');
     }).catch(error => {
         console.error("Error generating PDF:", error);
-        alert("Failed to generate PDF. Please try again.");
+        alert("Failed to generate PDF. Please try again. Check console for details."); // Added more specific error message
     });
 });
 
