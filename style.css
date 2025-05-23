@@ -107,7 +107,26 @@ label {
     border-color: #6a11cb;
     box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.1);
 }
+/* Add this to your existing CSS */
+.download-img-btn {
+    background: linear-gradient(to right, #ff8a00, #e52e71);
+    margin-top: 10px;
+}
 
+.download-img-btn:hover {
+    box-shadow: 0 5px 15px rgba(229, 46, 113, 0.3);
+}
+
+.btn-container {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.btn-container .btn {
+    flex: 1;
+    margin-top: 0;
+}
 .btn {
     background: linear-gradient(to right, #4a6baf, #6a11cb);
     color: white;
