@@ -107,26 +107,7 @@ label {
     border-color: #6a11cb;
     box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.1);
 }
-/* Add this to your existing CSS */
-.download-img-btn {
-    background: linear-gradient(to right, #ff8a00, #e52e71);
-    margin-top: 10px;
-}
 
-.download-img-btn:hover {
-    box-shadow: 0 5px 15px rgba(229, 46, 113, 0.3);
-}
-
-.btn-container {
-    display: flex;
-    gap: 10px;
-    width: 100%;
-}
-
-.btn-container .btn {
-    flex: 1;
-    margin-top: 0;
-}
 .btn {
     background: linear-gradient(to right, #4a6baf, #6a11cb);
     color: white;
@@ -223,6 +204,7 @@ label {
     justify-content: center;
     gap: 20px;
     margin-top: 10px;
+    flex-wrap: wrap; /* Added for responsiveness */
 }
 
 .faculty-info, .student-info {
@@ -252,6 +234,9 @@ label {
 .student-info {
     align-self: flex-start;
     margin-left: 20px;
+    /* Removed fixed margin-left for better responsiveness */
+    width: 100%; /* Ensure it takes full width for centering */
+    text-align: left; /* Default alignment */
 }
 
 .student-name, .student-id, .student-batch, .student-dept {
@@ -285,30 +270,115 @@ footer {
     
     .cover-page {
         width: 100%;
-        height: auto;
-        aspect-ratio: 210 / 297;
+        height: auto; /* Allow height to adjust */
+        aspect-ratio: 210 / 297; /* Maintain A4 aspect ratio */
+        max-width: 210mm; /* Ensure it doesn't get excessively wide on larger screens */
+        margin: 0 auto; /* Center the cover page */
+    }
+
+    .university-name {
+        font-size: 4vw; /* Responsive font size */
+    }
+
+    .report-title {
+        font-size: 4.5vw; /* Responsive font size */
+    }
+
+    .report-type {
+        font-size: 3.5vw; /* Responsive font size */
+    }
+
+    .course-info, .section-title, .faculty-name, .faculty-dept, 
+    .student-name, .student-id, .student-batch, .student-dept, .submission-date {
+        font-size: 3vw; /* Responsive font size */
+    }
+
+    .logo-container img {
+        max-height: 10vw; /* Responsive logo height */
     }
 }
 
 @media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
     .container {
-        padding: 15px;
+        padding: 20px;
     }
     
     .title {
-        font-size: 2rem;
+        font-size: 1.8rem;
     }
     
     .subtitle {
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
     
     .input-section {
-        padding: 15px;
+        padding: 20px;
     }
     
     .cover-page {
-        padding: 15mm;
+        padding: 10mm; /* Reduced padding for smaller screens */
+    }
+
+    .student-info {
+        margin-left: 0; /* Remove margin for smaller screens */
+        text-align: center; /* Center student info */
+    }
+
+    .student-name, .student-id, .student-batch, .student-dept {
+        text-align: center; /* Center text within student info */
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        padding: 10px;
+    }
+
+    .title {
+        font-size: 1.5rem;
+    }
+
+    .subtitle {
+        font-size: 0.8rem;
+    }
+
+    .input-section {
+        padding: 15px;
+    }
+
+    .form-control {
+        font-size: 14px;
+        padding: 10px 12px;
+    }
+
+    .btn {
+        font-size: 14px;
+        padding: 10px 20px;
+    }
+
+    .cover-page {
+        padding: 8mm; /* Further reduced padding */
+    }
+
+    .university-name {
+        font-size: 4.5vw; /* Slightly larger for readability on very small screens */
+    }
+
+    .report-title {
+        font-size: 5vw; /* Slightly larger */
+    }
+
+    .report-type {
+        font-size: 4vw; /* Slightly larger */
+    }
+
+    .course-info, .section-title, .faculty-name, .faculty-dept, 
+    .student-name, .student-id, .student-batch, .student-dept, .submission-date {
+        font-size: 3.5vw; /* Slightly larger */
     }
 }
 
@@ -323,63 +393,3 @@ footer {
 .form-group:nth-child(8) { animation-delay: 0.8s; }
 .form-group:nth-child(9) { animation-delay: 0.9s; }
 .form-group:nth-child(10) { animation-delay: 1.0s; }
-
-/* PDF/Print Quality Improvements */
-.cover-page {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-}
-
-@page {
-    size: A4;
-    margin: 0;
-}
-
-@media print {
-    body * {
-        visibility: hidden;
-    }
-    .cover-page, .cover-page * {
-        visibility: visible;
-    }
-    .cover-page {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 210mm;
-        height: 297mm;
-        margin: 0;
-        padding: 25mm;
-        box-shadow: none;
-    }
-}
-
-/* Additional PDF Quality Enhancements */
-.cover-page img {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-}
-
-.cover-page * {
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-}
-
-/* Increase font sizes slightly for better PDF readability */
-.report-title {
-    font-size: 26px;
-}
-
-.course-info {
-    font-size: 19px;
-}
-
-.faculty-name, .faculty-dept, 
-.student-name, .student-id, 
-.student-batch, .student-dept {
-    font-size: 17px;
-}
-
-.submission-date {
-    font-size: 17px;
-}
