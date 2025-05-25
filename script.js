@@ -200,7 +200,19 @@ generateBtn.addEventListener('click', function() {
 // Download as PDF
 downloadBtn.addEventListener('click', function() {
     console.log('Download button clicked.');
-    // Define the options for html2pdf
+    const element = document.getElementById('coverPage');
+    console.log('Element to convert:', element);
+
+    if (!element) {
+        showMessageBox('পিডিএফ তৈরি করার জন্য কভার পেজ খুঁজে পাওয়া যায়নি!', 'error'); // Cover page element not found for PDF generation!
+        console.error('Error: Cover page element not found.');
+        return;
+    }
+
+    // Log the HTML content that html2canvas will process
+    console.log('HTML content of coverPage:', element.outerHTML);
+
+    // Options for html2pdf
     const options = {
         margin: 10, // Margins in mm
         filename: 'SFMU_Cover_Page.pdf',
@@ -211,7 +223,7 @@ downloadBtn.addEventListener('click', function() {
         html2canvas: {
             scale: 10, // High scale for maximum resolution
             useCORS: true, // Enable CORS for images
-            allowTaint: true // Allow images to taint the canvas (for cross-origin images)
+            allowTaint: true, // Allow images to taint the canvas (for cross-origin images)
         },
         jsPDF: {
             unit: 'mm',
@@ -220,27 +232,20 @@ downloadBtn.addEventListener('click', function() {
         }
     };
 
-    // Get the element to be converted
-    const element = document.getElementById('coverPage');
-    console.log('Element to convert:', element);
-
-    if (!element) {
-        showMessageBox('পিডিএফ তৈরি করার জন্য কভার পেজ খুঁজে পাওয়া যায়নি!', 'error'); // Cover page element not found for PDF generation!
-        console.error('Error: Cover page element not found.');
-        return;
-    }
-
     try {
         console.log('Attempting to generate PDF...');
-        html2pdf().set(options).from(element).save()
-            .then(() => {
-                console.log('PDF generation successful!');
-                showMessageBox('পিডিএফ সফলভাবে ডাউনলোড হয়েছে!', 'success'); // PDF downloaded successfully!
-            })
-            .catch(error => {
-                console.error('PDF generation failed:', error);
-                showMessageBox(`পিডিএফ তৈরি করতে সমস্যা হয়েছে: ${error.message}`, 'error'); // Problem generating PDF:
-            });
+        // Add a small timeout to ensure all DOM rendering and image loading is complete
+        setTimeout(() => {
+            html2pdf().set(options).from(element).save()
+                .then(() => {
+                    console.log('PDF generation successful!');
+                    showMessageBox('পিডিএফ সফলভাবে ডাউনলোড হয়েছে!', 'success'); // PDF downloaded successfully!
+                })
+                .catch(error => {
+                    console.error('PDF generation failed:', error);
+                    showMessageBox(`পিডিএফ তৈরি করতে সমস্যা হয়েছে: ${error.message}`, 'error'); // Problem generating PDF:
+                });
+        }, 300); // 300ms delay
     } catch (e) {
         console.error('Unexpected error during PDF generation initiation:', e);
         showMessageBox(`একটি অপ্রত্যাশিত ত্রুটি হয়েছে: ${e.message}`, 'error'); // An unexpected error occurred:
