@@ -139,7 +139,14 @@ generateBtn.addEventListener('click', function() {
     
     // Validate required fields
     if (!reportTitle || !courseTitle || !courseCode || !department || !submittedTo || !studentName || !studentId || !batch || !submissionDate) {
-        alert('Please fill all required fields!');
+        // Replace alert with a more user-friendly message box or modal
+        console.error('Please fill all required fields!');
+        // Example of a simple message box (you can style this with CSS)
+        const messageBox = document.createElement('div');
+        messageBox.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #ffdddd; border: 1px solid #ff0000; padding: 20px; border-radius: 8px; z-index: 1000;';
+        messageBox.textContent = 'Please fill all required fields!';
+        document.body.appendChild(messageBox);
+        setTimeout(() => messageBox.remove(), 3000); // Remove after 3 seconds
         return;
     }
     
@@ -173,27 +180,31 @@ generateBtn.addEventListener('click', function() {
 
 // Download as PDF
 downloadBtn.addEventListener('click', function() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4'
-    });
-    
-    // Use html2canvas to capture the cover page
-    html2canvas(coverPage, {
-        scale: 2,
-        logging: false,
-        useCORS: true,
-        allowTaint: true
-    }).then(canvas => {
-        const imgData = canvas.toDataURL('image/png');
-        const imgWidth = 210; // A4 width in mm
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
-        
-        doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-        doc.save('SFMU_Cover_Page.pdf');
-    });
+    // Define the options for html2pdf
+    const options = {
+        margin: 10, // Margins in mm
+        filename: 'SFMU_Cover_Page.pdf',
+        image: {
+            type: 'jpeg',
+            quality: 0.98
+        },
+        html2canvas: {
+            scale: 2, // Higher scale for better resolution
+            useCORS: true, // Enable CORS for images
+            allowTaint: true // Allow images to taint the canvas (for cross-origin images)
+        },
+        jsPDF: {
+            unit: 'mm',
+            format: 'a4',
+            orientation: 'portrait'
+        }
+    };
+
+    // Get the element to be converted
+    const element = document.getElementById('coverPage');
+
+    // Use html2pdf to generate and save the PDF
+    html2pdf().set(options).from(element).save();
 });
 
 // Animation on scroll
