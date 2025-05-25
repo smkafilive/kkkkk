@@ -183,13 +183,13 @@ downloadBtn.addEventListener('click', function() {
     // Define the options for html2pdf
     const options = {
         margin: 10, // Margins in mm
-        filename: 'SFMU_cover.pdf',
+        filename: 'SFMU_Cover_Page.pdf',
         image: {
-            type: 'jpeg',
-            quality: 2.0 // Set quality to maximum
+            type: 'png', // Changed image type to PNG for lossless quality
+            quality: 1.0 // Quality setting is less relevant for PNG but kept for consistency
         },
         html2canvas: {
-            scale: 10, // Increased scale for significantly better resolution/clarity
+            scale: 10, // High scale for maximum resolution
             useCORS: true, // Enable CORS for images
             allowTaint: true // Allow images to taint the canvas (for cross-origin images)
         },
