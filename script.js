@@ -1,13 +1,53 @@
-// Data for departments and faculties
+// Faculty data
 const facultyData = {
-    "CSE": ["Dr. A. Rahman", "Dr. N. Islam", "Dr. S. Haque"],
-    "EEE": ["Dr. J. Karim", "Dr. M. Alam"],
-    "BBA": ["Dr. T. Khatun", "Dr. H. Sarker"],
-    "LAW": ["Dr. F. Ahmed"],
-    "Economics": ["Dr. Z. Hassan"],
-    "English": ["Dr. L. Chowdhury"],
-    "Political Science": ["Dr. P. Das"]
+    "CSE": [
+        "Fazle Rabby, Assistant Professor & Head",
+        "Fazle Rabbi Rushu, Assistant Professor",
+        "Afrin Jahan Chowdhury, Lecturer",
+        "Md. Rafiuzzaman, Lecturer",
+        "Afia Farzana, Lecturer",
+        "MD. Abdul Hye, Professor & Dean, Engineering Faculty"
+    ],
+    "EEE": [
+        "Junaid Bin Fakhrul Islam, Assistant Professor & Head",
+        "Md. Hasanuzzaman, Assistant Professor",
+        "Md. Al-Arman Chowdhury Asif, Lecturer",
+        "Sheikh Md. Shafiqul Islam, Lecturer"
+    ],
+    "BBA": [
+        "Rashel Sheikh, Associate Professor & Dean",
+        "Md. Maksodul Haque Sawrov, Assistant Professor & Head",
+        "Md. Tareq Hasan, Assistant Professor",
+        "Md. Mirajul Islam, Assistant Professor",
+        "Bithi Rani Debnath, Lecturer"
+    ],
+    "LAW": [
+        "G.M. Ikramul Kabir, Assistant Professor & Head",
+        "Hadiuzzaman, Assistant Professor",
+        "Md. Taibur Rahman, Lecturer",
+        "Tangila Yasmeen, Lecturer",
+        "Happy Akter, Lecturer",
+        "Mubtasim Alam Musavee, Lecturer"
+    ],
+    "English": [
+        "Md. Amirul Mumeneen, Associate Professor & Head",
+        "Md. Shaon Akter, Assistant Professor",
+        "Mst. Tanna Khatun, Assistant Professor",
+        "Md. Naymul Islam, Lecturer"
+    ],
+    "Economics": [
+        "Md. Minhaz Uddin, Assistant Professor & Head",
+        "Md. Hasanur Rahman, Lecturer"
+    ],
+    "Political Science": [
+        "Sidratul Montaha, Assistant Professor & Head",
+        "Afroza Yasmin Mitu, Lecturer",
+        "Dil Noshina Jannat, Lecturer",
+        "Md. Mehabub Hasan, Lecturer"
+    ]
 };
+
+// Department full names
 const departmentFullNames = {
     "CSE": "Computer Science & Engineering",
     "EEE": "Electrical & Electronic Engineering",
@@ -131,46 +171,39 @@ generateBtn.addEventListener('click', function() {
     coverPage.scrollIntoView({ behavior: 'smooth' });
 });
 
-// Download as PDF (wait for logo to load and DOM to update!)
+// Download as PDF
 downloadBtn.addEventListener('click', function() {
-    const logo = document.getElementById('universityLogo');
-    if (!logo.complete) {
-        logo.onload = () => setTimeout(generatePDF, 200);
-        logo.onerror = () => alert("Logo image failed to load! PDF may be blank.");
-    } else {
-        // Wait for DOM updates
-        setTimeout(generatePDF, 200);
-    }
-
-    function generatePDF() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-
-        html2canvas(coverPage, {
-            scale: 2,
-            logging: false,
-            useCORS: true,
-            allowTaint: true,
-            foreignObjectRendering: true
-        }).then(canvas => {
-            const imgData = canvas.toDataURL('image/png');
-            const imgWidth = 210; // A4 width in mm
-            const imgHeight = (canvas.height * imgWidth) / canvas.width;
-            doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-            doc.save('SFMU_Cover_Page.pdf');
-        }).catch(error => {
-            console.error("Error generating PDF:", error);
-            alert("Failed to generate PDF. This often happens if an image (like your logo) cannot be loaded. Please check the browser console (F12) for network errors related to sfmu.png and ensure it's in the correct location.");
-        });
-    }
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
+    });
+    
+    // Use html2canvas to capture the cover page
+    html2canvas(coverPage, {
+        scale: 2,
+        logging: false,
+        useCORS: true,
+        allowTaint: true
+    }).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const imgWidth = 210; // A4 width in mm
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        
+        doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+        doc.save('SFMU_Cover_Page.pdf');
+    });
 });
 
-// Animation on scroll (optional)
+// Animation on scroll
 window.addEventListener('scroll', function() {
     const elements = document.querySelectorAll('.form-group, .cover-page, footer');
+    
     elements.forEach(element => {
         const elementPosition = element.getBoundingClientRect().top;
         const screenPosition = window.innerHeight / 1.2;
+        
         if (elementPosition < screenPosition) {
             element.style.opacity = '1';
             element.style.transform = 'translateY(0)';
