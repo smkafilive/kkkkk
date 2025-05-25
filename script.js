@@ -122,6 +122,30 @@ submittedToSelect.addEventListener('change', function() {
     }
 });
 
+// Function to display a custom message box
+function showMessageBox(message, type = 'error') {
+    const messageBox = document.createElement('div');
+    messageBox.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: ${type === 'error' ? '#ffdddd' : '#d4edda'};
+        border: 1px solid ${type === 'error' ? '#ff0000' : '#28a745'};
+        color: ${type === 'error' ? '#721c24' : '#155724'};
+        padding: 20px;
+        border-radius: 8px;
+        z-index: 1000;
+        font-family: 'Poppins', sans-serif;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        text-align: center;
+    `;
+    messageBox.textContent = message;
+    document.body.appendChild(messageBox);
+    setTimeout(() => messageBox.remove(), 5000); // Remove after 5 seconds
+}
+
+
 // Generate cover page
 generateBtn.addEventListener('click', function() {
     // Get form values
@@ -139,14 +163,8 @@ generateBtn.addEventListener('click', function() {
     
     // Validate required fields
     if (!reportTitle || !courseTitle || !courseCode || !department || !submittedTo || !studentName || !studentId || !batch || !submissionDate) {
-        // Replace alert with a more user-friendly message box or modal
-        console.error('Please fill all required fields!');
-        // Example of a simple message box (you can style this with CSS)
-        const messageBox = document.createElement('div');
-        messageBox.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #ffdddd; border: 1px solid #ff0000; padding: 20px; border-radius: 8px; z-index: 1000;';
-        messageBox.textContent = 'Please fill all required fields!';
-        document.body.appendChild(messageBox);
-        setTimeout(() => messageBox.remove(), 3000); // Remove after 3 seconds
+        showMessageBox('অনুগ্রহ করে সমস্ত প্রয়োজনীয় ক্ষেত্র পূরণ করুন!', 'error'); // Please fill all required fields!
+        console.error('Validation Error: Please fill all required fields!');
         return;
     }
     
@@ -176,10 +194,12 @@ generateBtn.addEventListener('click', function() {
     
     // Scroll to preview
     coverPage.scrollIntoView({ behavior: 'smooth' });
+    showMessageBox('কভার পেজ তৈরি হয়েছে! এখন ডাউনলোড করতে পারেন।', 'success'); // Cover page generated! You can download now.
 });
 
 // Download as PDF
 downloadBtn.addEventListener('click', function() {
+    console.log('Download button clicked.');
     // Define the options for html2pdf
     const options = {
         margin: 10, // Margins in mm
@@ -202,9 +222,29 @@ downloadBtn.addEventListener('click', function() {
 
     // Get the element to be converted
     const element = document.getElementById('coverPage');
+    console.log('Element to convert:', element);
 
-    // Use html2pdf to generate and save the PDF
-    html2pdf().set(options).from(element).save();
+    if (!element) {
+        showMessageBox('পিডিএফ তৈরি করার জন্য কভার পেজ খুঁজে পাওয়া যায়নি!', 'error'); // Cover page element not found for PDF generation!
+        console.error('Error: Cover page element not found.');
+        return;
+    }
+
+    try {
+        console.log('Attempting to generate PDF...');
+        html2pdf().set(options).from(element).save()
+            .then(() => {
+                console.log('PDF generation successful!');
+                showMessageBox('পিডিএফ সফলভাবে ডাউনলোড হয়েছে!', 'success'); // PDF downloaded successfully!
+            })
+            .catch(error => {
+                console.error('PDF generation failed:', error);
+                showMessageBox(`পিডিএফ তৈরি করতে সমস্যা হয়েছে: ${error.message}`, 'error'); // Problem generating PDF:
+            });
+    } catch (e) {
+        console.error('Unexpected error during PDF generation initiation:', e);
+        showMessageBox(`একটি অপ্রত্যাশিত ত্রুটি হয়েছে: ${e.message}`, 'error'); // An unexpected error occurred:
+    }
 });
 
 // Animation on scroll
