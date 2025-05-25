@@ -189,7 +189,7 @@ downloadBtn.addEventListener('click', function() {
             quality: 0.98
         },
         html2canvas: {
-            scale: 2, // Higher scale for better resolution
+            scale: 4, // Increased scale for better resolution/clarity
             useCORS: true, // Enable CORS for images
             allowTaint: true // Allow images to taint the canvas (for cross-origin images)
         },
